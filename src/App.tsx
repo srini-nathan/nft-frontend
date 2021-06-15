@@ -1,25 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter } from "react-router-dom";
+import { Web3ReactProvider } from "@web3-react/core";
+import { ApolloProvider } from "@apollo/client";
+import { Container } from "react-bootstrap";
+import { HelmetProvider } from "react-helmet-async";
+import Layout from "./layout/Layout";
+import getLibrary from "./lib/getLibrary";
+import NotificationProvider from "./lib/providers/NotificationProvider";
+import { client } from "./apollo";
+import { AppRoute } from "./AppRoute";
+import { AuthProvider } from "../src/context/AuthProvider";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <ApolloProvider client={client}>
+        <AuthProvider>
+          <NotificationProvider>
+            <Web3ReactProvider getLibrary={getLibrary}>
+              <HelmetProvider>
+                <AppRoute />
+              </HelmetProvider>
+            </Web3ReactProvider>
+          </NotificationProvider>
+        </AuthProvider>
+      </ApolloProvider>
+    </BrowserRouter>
   );
 }
 

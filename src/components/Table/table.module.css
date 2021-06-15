@@ -1,0 +1,6 @@
+.greenTable {
+  background-image: linear-gradient(159deg, rgb(13, 134, 90, 0.89), #5ddbcf);
+  color: white;
+  background-color: #5ddbcf;
+  background-attachment: fixed;
+}
