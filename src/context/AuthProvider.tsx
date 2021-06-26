@@ -80,16 +80,21 @@ const AuthProvider = (props: Object) => {
   const [loginUser] = useMutation<Login, LoginVariables>(LOGIN);
   const [registerUser] = useMutation<SignUp, SignUpVariables>(SIGNUP);
 
+
+
   useEffect(() => {
     (async () => {
       if (userData === undefined) return; //means no token
-      setUser(userData.me);
+      if (loading) return
+      initState.user = userData.me
 
       const token = localStorage.getItem(TOKEN);
       if (!token) return;
       setToken(token);
+      setUser(initState.user);
+      
     })();
-  }, [userData]);
+  }, [userData, initState, loading]);
 
   const login: AuthContextValue["login"] = async ({ email, password }) => {
     const { data, errors } = await loginUser({
@@ -98,6 +103,7 @@ const AuthProvider = (props: Object) => {
 
     // temp validation, could be better
     if (errors || !data) return null;
+    if (loading) return null
 
     const token = data.login?.token!;
 

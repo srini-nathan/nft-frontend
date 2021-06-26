@@ -8,6 +8,9 @@ import { useChainSelector } from "../lib/providers/ChainSelectorProvider";
 import ConnectToWallet from "./ConnectToWallet/ConnectToWallet";
 import { ModalTemplate } from "./Modal/ModalTemplate";
 import NotificationDrawer from "./NotificationDrawer/NotificationDrawer";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
+
 
 const Header = ({
   head,
@@ -52,7 +55,7 @@ const Header = ({
   return (
     <>
       <NotificationDrawer />
-
+      <ReactNotification />
       <ModalTemplate
         show={show}
         name="Choose Wallet"
@@ -64,7 +67,7 @@ const Header = ({
       </ModalTemplate>
 
       <Container fluid>
-        <div className="starter-template text-center mt-5">
+        <div className="starter-template text-center">
           <h1>{head}</h1>
           <span className="lead text-capitalize">
             <div className="d-flex justify-content-between">

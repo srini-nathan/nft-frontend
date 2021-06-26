@@ -1,0 +1,26 @@
+.shadow {
+  -moz-box-shadow: 10px 10px 5px #ccc;
+  -webkit-box-shadow: 10px 10px 5px #ccc;
+  box-shadow: 10px 10px 5px #ccc;
+}
+.cardPricing.popular {
+  z-index: 1;
+  border: 1px solid #007bff
+}
+
+.cardPricing .listUnstyled li {
+  padding: .5rem 0;
+  color: #6c757d;
+  font-weight: 300
+}
+
+.btn {
+  border-radius: 1px;
+  font-weight: 300
+}
+
+.hvr:hover {
+  color: #fff;
+  background-color: #007bff;
+  border: 1px solid #007bff !important
+}

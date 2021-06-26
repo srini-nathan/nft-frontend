@@ -15,6 +15,7 @@ import useNotification from "../../lib/hooks/useNotification";
 import NotificationDrawer from "../../components/NotificationDrawer/NotificationDrawer";
 import useCurrentUser from "../../lib/hooks/useCurrentUser";
 import { ViewNFTList } from "./ViewNFTList";
+import { Container } from "react-bootstrap";
 
 export const UploadFileToIPFS = ({
   provider,
@@ -33,7 +34,7 @@ export const UploadFileToIPFS = ({
     }
   }, [data]);
 
-  const patentId = convertGuidToInt(uuidv4());
+  const patentId = convertGuidToInt(uuidv4()).toString();
   const signer = provider && provider.getSigner();
 
   let metadata = {
@@ -122,7 +123,10 @@ export const UploadFileToIPFS = ({
       <hr />
       <MetaDetailsContainer formFile={formFile} uploadToIPFS={uploadToIPFS} />
       <br />
-      <ViewNFTList />
+      <br />
+      <Container>
+        <ViewNFTList />
+      </Container>
     </>
   );
 };

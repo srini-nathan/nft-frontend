@@ -7,11 +7,29 @@
 // GraphQL query operation: GetByIpfsHash
 // ====================================================
 
+export interface GetByIpfsHash_getByIpfsHash_media {
+  __typename: "Media";
+  dimensions: string;
+  mimeType: string;
+  size: number | null;
+}
+
+export interface GetByIpfsHash_getByIpfsHash_authentication {
+  __typename: "Authentication";
+  metaDataHash: string | null;
+  signature: string | null;
+  owner: string | null;
+}
+
 export interface GetByIpfsHash_getByIpfsHash {
   __typename: "IpfsItem";
-  assetItem: string;
+  image: string;
   description: string;
   name: string;
+  assetFileName: string;
+  patentId: string;
+  media: GetByIpfsHash_getByIpfsHash_media;
+  authentication: GetByIpfsHash_getByIpfsHash_authentication;
 }
 
 export interface GetByIpfsHash {

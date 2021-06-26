@@ -6,6 +6,7 @@ export interface NFTDetails {
   __typename: "NFTDetails";
   id: string;
   ipfsHash: string;
+  isAssetReady:boolean,
   isMinted: boolean;
   nFTId: string | null;
 }

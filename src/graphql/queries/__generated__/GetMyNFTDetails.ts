@@ -12,6 +12,7 @@ export interface GetMyNFTDetails_getMyNFTDetails {
   id: string;
   ipfsHash: string;
   isMinted: boolean;
+  isAssetReady: boolean;
   nFTId: string | null;
 }
 

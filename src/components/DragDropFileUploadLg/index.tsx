@@ -60,7 +60,7 @@ const DragDropFileUploadLg = ({
     accept: ["image/*"],
     maxFiles: 1,
     multiple: false,
-    maxSize: 10 * megaByte,
+    maxSize: 100 * megaByte,
   });
 
   const refreshUpload = () => {

@@ -6,6 +6,7 @@ export const GET_MY_NFT_DETAILS = gql`
       id
       ipfsHash
       isMinted
+      isAssetReady
       nFTId
     }
   }

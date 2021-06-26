@@ -1,5 +1,4 @@
-import react from "react";
-import { Navbar, Nav, Container, Button, NavLink } from "react-bootstrap";
+import { Navbar, Nav } from "react-bootstrap";
 // import logo from "../assets/casimir_logo.svg";
 // import logo_text from "../assets/casimir_TextOnly.jpg";
 import transparent_logo from "../assets/casimir_TransparentBg.png";
@@ -9,10 +8,14 @@ import { JwtItem } from "../types/auth";
 export const Menu = ({
   token,
   handleLogout,
+  role
 }: {
   token: JwtItem | null;
   handleLogout: () => void;
+  role:string | undefined
 }) => {
+  
+  
   return (
     <Navbar collapseOnSelect className="sticky-top">
       <Link to="/" className="navbar-brand">
@@ -40,7 +43,7 @@ export const Menu = ({
             ""
           ) : (
             <>
-            <Link to="/mynft" className="nav-link mx-3 text-dark">
+              <Link to="/mynft" className="nav-link mx-3 text-dark">
                 MyNFT
               </Link>
 
@@ -51,6 +54,10 @@ export const Menu = ({
               <Nav.Link className="mx-3 text-dark" onClick={handleLogout}>
                 Logout
               </Nav.Link>
+
+             {role==="Creator" && <Link to="/admin/dashboard" className="nav-link mx-3 text-dark">
+                Dashboard
+              </Link>}
             </>
           )}
         </Nav>

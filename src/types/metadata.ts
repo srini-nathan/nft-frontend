@@ -13,5 +13,5 @@ export interface MetadataJson {
     signature: string | 0 | undefined;
     owner: string | 0 | undefined;
   };
-  patentId: number;
+  patentId: string;
 }
