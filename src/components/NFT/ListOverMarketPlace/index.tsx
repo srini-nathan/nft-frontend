@@ -1,5 +1,7 @@
+import { ApolloQueryResult } from "@apollo/client";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
+import { GetMyNFTAsset } from "../../../graphql/queries/__generated__/GetMyNFTAsset";
 import { GetMyNFTAssetDetails } from "../../../lib/hooks/useFetchNFTAsset";
 import { useFetchTokenIdByAssetIndex } from "../../../lib/hooks/useFetchTokenIdByAssetIndex";
 import { getContractAddress } from "../../../services/contracts/contractConnector";
@@ -10,9 +12,11 @@ import { ListOverMarketPlaceContainer } from "./ListOverMarketPlaceContainer";
 export const ListOverMarketPlace = ({
   metadataJson,
   myNFTAsset,
+  refetch
 }: {
   metadataJson: MetadataJson;
   myNFTAsset: GetMyNFTAssetDetails;
+  refetch:() => Promise<ApolloQueryResult<GetMyNFTAsset>>;
 }) => {
   const assetIndex = metadataJson.patentId;
   const { data, loading } = useFetchTokenIdByAssetIndex(assetIndex);
@@ -38,6 +42,7 @@ export const ListOverMarketPlace = ({
     <ListOverMarketPlaceContainer
       listOverMarkerInput={listOverMarkerInput}
       instance={instance}
+      refetch={refetch}
     />
   );
 };

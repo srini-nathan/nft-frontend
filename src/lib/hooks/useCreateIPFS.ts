@@ -16,6 +16,7 @@ export const useCreateIPFS = () => {
   });
   const CreateNFT_IPFS = async (values: {
     ipfsHash: string;
+    assetIndex:string
     nftId: string | null;
   }) => {
     try {

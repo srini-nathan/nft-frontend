@@ -10,7 +10,7 @@ export async function validateJson(metadata: MetadataJson, signature: string) {
   );
 
   return (
-    (await isValidJson(metadata)) && address === metadata.authentication.owner
+    (await isValidJson(metadata)) && address === metadata.authentication.creator
   );
 }
 

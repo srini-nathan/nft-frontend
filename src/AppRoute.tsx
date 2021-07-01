@@ -13,6 +13,8 @@ import Layout from "../src/layout/Layout";
 import { MyNFTDetail } from "./pages/MyNFTDetail";
 import { Dashboard } from "./pages/Admin/Dashboard";
 import { BuyNFT } from "./pages/BuyNFT";
+import PrivateRoute from "./routes/PrivateRoute";
+import { MyCollectables } from "./pages/MyCollectables";
 // import { Profile } from "./dashboard/components/MyProfile/Profile";
 // import { MyNFT } from "./dashboard/components/MyNFT/MyNFT";
 // import { MyPatentDetails } from "./dashboard/components/MyNFT/MyPatent/MyPatentDetails";
@@ -26,7 +28,8 @@ export const AppRoute = () => {
         <CreatorRoute exact path={ROUTES.MYNFT} component={MyNFT} />
         <CreatorRoute exact path={ROUTES.NFT_DETAIL} component={MyNFTDetail} />
         <CreatorRoute exact path={ROUTES.BUY_NFT} component={BuyNFT} />
-        <CreatorRoute exact path={ROUTES.ADMIN_DASHBOARD} component={Dashboard} />
+        <CreatorRoute exact path={ROUTES.COLLECTABLES_DETAIL} component={MyCollectables} />
+        <PrivateRoute exact path={ROUTES.ADMIN_DASHBOARD} component={Dashboard} />
         {/* 
         <CreatorRoute  exact path={ROUTES.PATENT} component={MyPatentDetails} />  */}
         <Route path={ROUTES.SIGNUP} component={SignUp} />

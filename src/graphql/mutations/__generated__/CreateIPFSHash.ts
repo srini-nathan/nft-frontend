@@ -20,5 +20,6 @@ export interface CreateIPFSHash {
 
 export interface CreateIPFSHashVariables {
   ipfsHash: string;
+  assetIndex: string;
   nftId?: string | null;
 }

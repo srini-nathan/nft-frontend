@@ -3,20 +3,20 @@ import TableExpandable from "../../components/Table/TableExpandable";
 import shortenHex from "../common/shortenHex";
 import TableStyles from "../../components/Table/table.module.css";
 import { Link } from "react-router-dom";
+import { VerifyNFTStatus } from "./VerifyNFTStatus";
 
 export const ViewNFTList = () => {
   const { nFTData } = useFetchMyNFT();
 
   const getColumns = () => [
+    
     {
-      dataField: "isMinted",
-      text: "Is Minted",
+      dataField: "assetIndex",
+      text: "Status",
       align: "left",
-    },
-    {
-      dataField: "isAssetReady",
-      text: "Is Asset Prepared",
-      align: "left",
+      formatter:(assetIndex:string) => {
+        return <VerifyNFTStatus assetIndex={assetIndex} />
+      }
     },
     {
       dataField: "ipfsHash",
@@ -37,6 +37,7 @@ export const ViewNFTList = () => {
 
   return (
     <>
+    <h3>NFT Assets</h3>
       <TableExpandable
         keyField="id"
         data={nFTData}

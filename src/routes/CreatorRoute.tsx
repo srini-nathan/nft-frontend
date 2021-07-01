@@ -33,7 +33,7 @@ const CreatorRoute: React.FC<IProps> = ({
     <Route
       {...rest}
       render={(props) =>
-        isAuthorizedCreator ? (
+        isAuthorizedCreator || isAuthorizedAdmin ? (
           <Component {...props} />
         ) : isAuthorizedAdmin ? (
           <Redirect to={ROUTES.ADMIN_DASHBOARD} />

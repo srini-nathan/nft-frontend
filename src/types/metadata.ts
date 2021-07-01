@@ -11,7 +11,7 @@ export interface MetadataJson {
   authentication: {
     metaDataHash: string | undefined;
     signature: string | 0 | undefined;
-    owner: string | 0 | undefined;
+    creator: string | 0 | undefined;
   };
   patentId: string;
 }

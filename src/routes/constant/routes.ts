@@ -11,5 +11,6 @@ export enum Route {
     SIGNOUT = '/signout',
     SIGNUP = '/signup/:id',
     FORGOT_PASSWORD = '/forgot_password',
-    BUY_NFT='/nft/:owner/:id'
+    BUY_NFT='/nft/:owner/:id',
+    COLLECTABLES_DETAIL = '/nft/collectable/detail/:owner/:id/:assetIndexHash',
 }

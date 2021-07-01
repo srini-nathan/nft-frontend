@@ -24,7 +24,7 @@ export const NFTDetail = () => {
     authentication: {
       metaDataHash: myNFTDetail?.authentication.metaDataHash!,
       signature: myNFTDetail?.authentication.signature!,
-      owner: myNFTDetail?.authentication.owner!,
+      creator: myNFTDetail?.authentication.creator!,
     },
     patentId: myNFTDetail?.patentId!,
   };
@@ -39,7 +39,7 @@ export const NFTDetail = () => {
   return (
     <>
       {authenticateMetaData(MetadataJson) && (
-        <ViewNFTDetail metadataJson={MetadataJson} ipfsHash={ipfsHash}/>
+        <ViewNFTDetail metadataJson={MetadataJson}/>
       )}
     </>
   );

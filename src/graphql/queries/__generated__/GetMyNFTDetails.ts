@@ -11,8 +11,8 @@ export interface GetMyNFTDetails_getMyNFTDetails {
   __typename: "NFTDetails";
   id: string;
   ipfsHash: string;
-  isMinted: boolean;
-  isAssetReady: boolean;
+  assetIndex: string;
+  walletAddress: string | null;
   nFTId: string | null;
 }
 

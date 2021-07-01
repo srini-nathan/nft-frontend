@@ -5,8 +5,8 @@ export const GET_MY_NFT_DETAILS = gql`
     getMyNFTDetails {
       id
       ipfsHash
-      isMinted
-      isAssetReady
+      assetIndex
+      walletAddress
       nFTId
     }
   }

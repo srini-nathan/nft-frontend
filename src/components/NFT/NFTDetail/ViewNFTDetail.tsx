@@ -1,5 +1,4 @@
 import { MetadataJson } from "../../../types/metadata";
-import { Col, Container, Jumbotron, Row } from "react-bootstrap";
 import style from "./nFTDetailStyled1.module.css";
 import { GoVerified } from "react-icons/go";
 import { IoIosDoneAll } from "react-icons/io";
@@ -7,125 +6,44 @@ import { SiIpfs } from "react-icons/si";
 import { PrepareAssetNFT } from "../PrepareAssetNFT";
 import {
   defaultNFTAsset,
-  GetMyNFTAssetDetails,
   useFetchNFTAsset,
 } from "../../../lib/hooks/useFetchNFTAsset";
-import { useFetchMyNFT } from "../../../lib/hooks/useFetchMyNFT";
+// import { useFetchMyNFT } from "../../../lib/hooks/useFetchMyNFT";
 import { MintNFT } from "../MintNFT";
 import shortenHex from "../../common/shortenHex";
 import { ListOverMarketPlace } from "../ListOverMarketPlace";
 import { useVerifyAssetIsOnSale } from "../../../lib/hooks/useVerifyAssetIsOnSale";
+import { ethers } from "ethers";
+import { useVerifyAccountHasMintRole } from "../../../lib/hooks/useVerifyAccountHasMintRole";
+import { UpdateSellingPrice } from "./UpdateSellingPrice";
 
 export const ViewNFTDetail = ({
   metadataJson,
-  ipfsHash,
 }: {
   metadataJson: MetadataJson;
-  ipfsHash: string;
 }) => {
-  const myNFTAsset: GetMyNFTAssetDetails =
+  const { myNFTAsset, refetch } =
     useFetchNFTAsset(metadataJson.patentId) ?? defaultNFTAsset;
+
   const { data, loading } = useVerifyAssetIsOnSale(metadataJson.patentId);
+  const { data: verifyMintRoleData, loading: verifyMintRoleLoading } =
+    useVerifyAccountHasMintRole(myNFTAsset._ownerAddress);
 
-  const { nFTData } = useFetchMyNFT();
+  // const { nFTData } = useFetchMyNFT();
 
-  if (loading) return <></>;
+  if (loading || verifyMintRoleLoading) return <></>;
 
-  const nftDataByFilter = nFTData.find((x) => x.ipfsHash === ipfsHash);
+  // const nftDataByFilter = nFTData.find((x) => x.ipfsHash === ipfsHash);
 
-  const owner: string = metadataJson.authentication.owner!.toString();
-  const isOnSale = data?.verifyAssetIsOnSale
+  const owner: string = metadataJson.authentication.creator!.toString();
+  const isOnSale = data?.verifyAssetIsOnSale;
+
+  const currentOwnerAddressIsZero =
+    myNFTAsset._ownerAddress === ethers.constants.AddressZero;
+  const isUserHasMinterRole = verifyMintRoleData?.verifyMintRole ?? false;
 
   return (
     <>
-      {/* <Jumbotron>
-        <div
-          className={`col-lg-8 border p-3 ${nftDetailStyled.mainSection} bg-white`}
-        >
-          <div className={`row ${nftDetailStyled.heading} m-0 pl-3 pt-0 pb-3`}>
-            <span>
-              <strong>Digitally Verified : </strong>
-              <GoVerified size="25" color="rgb(126,210,180)" />
-              <SiIpfs size="25" color="rgb(126,210,180)" />
-              <a
-                href={`${metadataJson.image}`}
-                rel="noreferrer"
-                target="_blank"
-              >
-                View On IPFS
-              </a>
-            </span>
-          </div>
-          <div className="row m-0">
-            <div
-              className={`col-lg-4 ${nftDetailStyled.leftSideProductBox} pb-3`}
-            >
-              <img src={metadataJson.image} className="border p-3" />
-            </div>
-            <div className="col-lg-8">
-              <div
-                className={`${nftDetailStyled.rightSideProDetail} border p-3 m-0`}
-              >
-                <div className="row">
-                  <div className="col-lg-12">
-                    <span>#{metadataJson.patentId}</span>
-                    <p className="m-0 p-0">{metadataJson.name}</p>
-                  </div>
-                  <div className="col-lg-12">
-                    <p className={`m-0 p-0 ${nftDetailStyled.pricePro}`}>
-                      {myNFTAsset._assetPrice ?? ""}
-                    </p>
-                    <hr className="p-0 m-0" />
-                  </div>
-                  <div className="col-lg-12 pt-2">
-                    <h5>Description</h5>
-                    <span>{metadataJson.description}</span>
-                    <hr />
-                    <h5>Asset Information</h5>
-                    <Row>
-                      <Col>{metadataJson.media.dimensions}</Col>
-                      <Col>{metadataJson.media.mimeType}</Col>
-                      <Col>{(metadataJson.media.size ?? 0) / 1000} KB</Col>
-                      <div className="col-lg-12">
-                        <p className={`${nftDetailStyled.tagSection}`}>
-                          <strong>Owner : </strong>
-                          {metadataJson.authentication.owner}
-                          {metadataJson.authentication.owner ===
-                          myNFTAsset._ownerAddress ? (
-                            <IoIosDoneAll size="25" color="rgb(126,210,180)" />
-                          ) : (
-                            ""
-                          )}
-                        </p>
-                        <p className={`${nftDetailStyled.tagSection}`}>
-                          <strong>Status : </strong>
-                          {!myNFTAsset._status
-                            ? "Ready to Create NFT Asset"
-                            : myNFTAsset._status}
-                        </p>
-                      </div>
-                    </Row>
-                    <hr className="m-0 pt-2 mt-2" />
-                  </div>
-
-                  <div>
-                    {!nftDataByFilter?.isAssetReady && (
-                      <PrepareAssetNFT metadataJson={metadataJson} />
-                    )}
-                    {nftDataByFilter?.isAssetReady &&
-                      !nftDataByFilter?.isMinted && (
-                        <MintNFT
-                          metadataJson={metadataJson}
-                          myNFTAsset={myNFTAsset}
-                        />
-                      )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Jumbotron> */}
       <div className="container">
         <div className="row d-md-flex-row  overflow-hidden">
           <div className="col-md-4  p-3 col-12 d-flex overflow-hidden ">
@@ -158,7 +76,7 @@ export const ViewNFTDetail = ({
                     </div>
 
                     <div className="card-body pt-0">
-                      <ul className={`${style.listUnstyled} mb-4`}>
+                      <ul className={`${style.listUnstyled} mb-0`}>
                         <li>
                           <SiIpfs size="25" color="rgb(126,210,180)" />{" "}
                           <a
@@ -170,12 +88,7 @@ export const ViewNFTDetail = ({
                           </a>
                         </li>
                       </ul>
-                      <button
-                        type="button"
-                        className="btn btn-outline-secondary mb-3 hvr"
-                      >
-                        Order now
-                      </button>
+                      <UpdateSellingPrice patentId = {metadataJson.patentId} newPrice={myNFTAsset._assetPrice} isOnSale={isOnSale ?? false}/>
                     </div>
                   </div>
                 </div>
@@ -195,23 +108,33 @@ export const ViewNFTDetail = ({
                   <p>{metadataJson.description}</p>
                   <hr />
 
-                  <p className="">
-                    <div>
-                      {<PrepareAssetNFT metadataJson={metadataJson} />}
-                      {myNFTAsset._status === "Created" && (
+                  <div>
+                    {myNFTAsset._status === "created" &&
+                      currentOwnerAddressIsZero && (
+                        <PrepareAssetNFT
+                          metadataJson={metadataJson}
+                          refetch={refetch}
+                        />
+                      )}
+
+                    {myNFTAsset._status === "created" &&
+                      !currentOwnerAddressIsZero && (
                         <MintNFT
                           metadataJson={metadataJson}
                           myNFTAsset={myNFTAsset}
+                          refetch={refetch}
+                          isUserHasMinterRole={isUserHasMinterRole}
                         />
                       )}
-                      {myNFTAsset._status === "minted" && !isOnSale && (
-                        <ListOverMarketPlace
-                          metadataJson={metadataJson}
-                          myNFTAsset={myNFTAsset}
-                        />
-                      )}
-                    </div>
-                  </p>
+
+                    {myNFTAsset._status === "minted" && (
+                      <ListOverMarketPlace
+                        metadataJson={metadataJson}
+                        myNFTAsset={myNFTAsset}
+                        refetch={refetch}
+                      />
+                    )}
+                  </div>
                 </div>
                 <div className="col-12 col-md-4 pt-md-5">
                   <h5 className="mt-md-4 mb-3 small text-uppercase">
@@ -235,23 +158,28 @@ export const ViewNFTDetail = ({
                   <h5 className="mt-md-5 mb-3 small text-uppercase">
                     <b>Owner</b>
                   </h5>
-                  <div className="mb-3 mt-2">
-                    {shortenHex(owner)}
-                    {metadataJson.authentication.owner ===
-                    myNFTAsset._ownerAddress ? (
-                      <IoIosDoneAll size="25" color="rgb(126,210,180)" />
-                    ) : (
-                      ""
-                    )}
-                  </div>
+                  {myNFTAsset._status === "sold" ? (
+                    <div className="mb-3 mt-2">
+                      {shortenHex(myNFTAsset._ownerAddress)}
+                    </div>
+                  ) : (
+                    <div className="mb-3 mt-2">
+                      {shortenHex(myNFTAsset._ownerAddress)}
+                      {metadataJson.authentication.creator ===
+                      myNFTAsset._ownerAddress ? (
+                        <IoIosDoneAll size="25" color="rgb(126,210,180)" />
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  )}
                   <h5 className="mt-md-5 mb-3 small text-uppercase">
                     <b>Status</b>
                   </h5>
                   <div className="mb-3 mt-2">
-                    {isOnSale
-                      ? "Listed Over MarketPlace"
-                      : !myNFTAsset._status
-                      ? "Ready to Create NFT Asset"
+                    {myNFTAsset._status === "created" &&
+                    currentOwnerAddressIsZero
+                      ? "Ready"
                       : myNFTAsset._status}
                   </div>
                 </div>

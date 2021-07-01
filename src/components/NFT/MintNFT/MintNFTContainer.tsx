@@ -7,8 +7,10 @@ import { Spinner } from "../../common/spinner";
 import { MintNFTForm } from "./MintNFTForm";
 import { Contract } from "ethers";
 import { useNotification } from "../../../lib/useNotification";
-import { useUpdateNFT } from "../../../lib/hooks/useUpdateNFT";
 import useCurrentUser from "../../../lib/hooks/useCurrentUser";
+import { ApolloQueryResult } from "@apollo/client";
+import { GetMyNFTAsset } from "../../../graphql/queries/__generated__/GetMyNFTAsset";
+import { MinterRoleAccessContainer } from "./MinterRoleAccessContainer";
 
 export type MintNFTFormSubmitT = {
   assetIndex: number;
@@ -18,16 +20,20 @@ export type MintNFTFormSubmitT = {
 export const MintNFTContainer = ({
   instance,
   mintNFTInput,
+  refetch,
+  isUserHasMinterRole,
+  chainId,
 }: {
   instance: Contract | undefined;
   mintNFTInput: { assetIndex: number; owner: string; ipfsHash: string };
+  refetch: () => Promise<ApolloQueryResult<GetMyNFTAsset>>;
+  isUserHasMinterRole: boolean;
+  chainId: number | undefined;
 }) => {
   const [errors, setErrors] = useState<string[]>([]);
   const { success } = useNotification();
   const { data: currentUserData, loading: currentLoading } = useCurrentUser();
-  const { update_NFT, loading: updateNFTLoading } = useUpdateNFT();
 
-  
 
   const formik = useFormik({
     initialValues: {
@@ -43,7 +49,7 @@ export const MintNFTContainer = ({
     },
   });
 
-  if (currentLoading || updateNFTLoading) return <Spinner size={30} />;
+  if (currentLoading) return <Spinner size={30} />;
   const nftId = currentUserData?.me?.nft?.id ?? "";
 
   const mintNFT = async (values: MintNFTFormSubmitT) => {
@@ -56,12 +62,9 @@ export const MintNFTContainer = ({
         instance &&
         (await instance?.provider.waitForTransaction(transactionObject.hash));
       if (TransactionReceipt) {
-        await update_NFT({
-          ipfsHash: mintNFTInput.ipfsHash,
-          nftId,
-          isMinted: true,
-        });
+        
         success("Success", "Transaction executed successfully");
+        refetch();
       }
     } catch (error) {
       console.log(error);
@@ -75,6 +78,17 @@ export const MintNFTContainer = ({
       setErrors([...errorMessages]);
     }
   };
+
+  if (!isUserHasMinterRole) {
+    return (
+      <MinterRoleAccessContainer
+        accountAddress={mintNFTInput.owner}
+        chainId={chainId}
+        ipfsHash={mintNFTInput.ipfsHash}
+        nftId={nftId}
+      />
+    );
+  }
 
   return (
     <>

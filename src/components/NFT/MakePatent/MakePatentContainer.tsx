@@ -22,7 +22,8 @@ export const MakePatentContainer = ({
   _assetPrice,
   isAssetOnSale,
   instance,
-  tokenOwner
+  tokenOwner,
+  assetIndexHash
 }: {
   myNFTDetail: GetMyIpfsHashDetail;
   tokenId: string;
@@ -31,18 +32,22 @@ export const MakePatentContainer = ({
   _assetPrice: number;
   isAssetOnSale: boolean;
   instance: Contract | undefined;
-  tokenOwner:boolean
+  tokenOwner: boolean;
+  assetIndexHash?:string
 }) => {
   const baseURL = GetBaseEtherscanURL();
   const [errors, setErrors] = useState<string[]>([]);
   const { success } = useNotification();
+  
 
   const buyNFT = async (values: { tokenId: Number }) => {
-    console.log(values.tokenId);
-
     try {
       let transactionObject;
-      transactionObject = instance && (await instance.buyNFT(values.tokenId));
+      transactionObject =
+        instance &&
+        (await instance.buyNFT(values.tokenId, {
+          value: ethers.utils.parseEther(_assetPrice.toString()),
+        }));
 
       const TransactionReceipt =
         instance &&
@@ -159,15 +164,19 @@ export const MakePatentContainer = ({
           {isAssetOnSale ? (
             <FormikProvider value={formik}>
               <Form>
-              {!tokenOwner  ? <MakePatentForm formik={formik} />: <h3 style={{ color: "red" }}>It is your token</h3>}
+                {!tokenOwner ? (
+                  <MakePatentForm formik={formik} />
+                ) : (
+                  <h3 style={{ color: "red" }}>It is your token</h3>
+                )}
               </Form>
             </FormikProvider>
           ) : (
-            <h2 style={{ color: "red" }}>Sold</h2>
+            assetIndexHash? <h2 style={{ color: "green" }}>Your Collection</h2> :<h2 style={{ color: "red" }}>Sold</h2>
           )}
         </div>
       </Row>
-      <Card.Footer className="text-muted">2 days ago</Card.Footer>
+      {/* <Card.Footer className="text-muted">2 days ago</Card.Footer> */}
     </Card>
   );
 };

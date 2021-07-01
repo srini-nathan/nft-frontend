@@ -16,7 +16,7 @@ export const GET_NFT_BY_IPFS_HASH = gql`
       authentication {
         metaDataHash
         signature
-        owner
+        creator
       }
     }
   }

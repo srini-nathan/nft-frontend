@@ -55,7 +55,7 @@ export const Menu = ({
                 Logout
               </Nav.Link>
 
-             {role==="Creator" && <Link to="/admin/dashboard" className="nav-link mx-3 text-dark">
+             {role==="Admin" && <Link to="/admin/dashboard" className="nav-link mx-3 text-dark">
                 Dashboard
               </Link>}
             </>

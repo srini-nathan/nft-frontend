@@ -3,6 +3,8 @@ import { ViewAssetOnSale } from "./ViewAssetOnSale";
 
 export const AssetOnSaleContainer = ({account}:{account:string}) => {
   const AssetsInSale = useFetchAllSaleAsset();
+  console.log(AssetsInSale);
+  
 
   return (
     <div>

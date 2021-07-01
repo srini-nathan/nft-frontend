@@ -10,8 +10,8 @@ import { createAssetNFTProps } from ".";
 import { Contract, ethers } from "ethers";
 import { useNotification } from "../../../lib/useNotification";
 import useCurrentUser from "../../../lib/hooks/useCurrentUser";
-import { useUpdateNFT } from "../../../lib/hooks/useUpdateNFT";
-import { Button } from "react-bootstrap";
+import { ApolloQueryResult } from "@apollo/client";
+import { GetMyNFTAsset } from "../../../graphql/queries/__generated__/GetMyNFTAsset";
 
 const InitialCreateAssetNFTValues = {
   tokenPrice: "",
@@ -25,17 +25,16 @@ export const CreateAssetNFTContainer = ({
   instance,
   createAssetNFT,
   assetIndex,
-  ipfsHash,
+  refetch,
 }: {
   instance: Contract | undefined;
   createAssetNFT: createAssetNFTProps;
   assetIndex: number;
-  ipfsHash: string;
+  refetch: () => Promise<ApolloQueryResult<GetMyNFTAsset>>;
 }) => {
   const [errors, setErrors] = useState<string[]>([]);
   const { success } = useNotification();
   const { data: currentUserData, loading: currentLoading } = useCurrentUser();
-  const { update_NFT, loading: updateNFTLoading } = useUpdateNFT();
 
   const formik = useFormik({
     initialValues: InitialCreateAssetNFTValues,
@@ -46,14 +45,12 @@ export const CreateAssetNFTContainer = ({
     ) => {
       await prepareNFT(values);
       formikHelpers.resetForm();
+      refetch()
     },
   });
 
-  console.log(instance);
-  
-
-  if (currentLoading || updateNFTLoading) return <Spinner size={30} />;
-  const nftId = currentUserData?.me?.nft?.id ?? "";
+  if (currentLoading) return <Spinner size={30} />;
+  // const nftId = currentUserData?.me?.nft?.id ?? "";
 
   const prepareNFT = async (values: CreateAssetNFTFormSubmitT) => {
     try {
@@ -75,7 +72,7 @@ export const CreateAssetNFTContainer = ({
         instance &&
         (await instance?.provider.waitForTransaction(transactionObject.hash));
       if (TransactionReceipt) {
-        await update_NFT({ ipfsHash, nftId, isAssetReady: true });
+        
         success("Success", "Transaction executed successfully");
       }
     } catch (error) {

@@ -16,8 +16,9 @@ export const ViewAssetOnSale = ({
   account: string;
 }) => {
   const { data, loading } = useVerifyAssetIsOnSale(assetIndex);
-  const { _assetPrice, _ipfsHash, _ownerAddress } =
-    useFetchNFTAsset(assetIndex);
+  const { myNFTAsset, refetch } = useFetchNFTAsset(assetIndex);
+
+  const { _assetPrice, _ipfsHash, _ownerAddress } = myNFTAsset;
 
   const { myNFTDetail } = useFetchNFTDetail(_ipfsHash);
   const { ethUSD } = usePrice();

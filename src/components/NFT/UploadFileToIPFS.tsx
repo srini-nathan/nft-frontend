@@ -16,6 +16,7 @@ import NotificationDrawer from "../../components/NotificationDrawer/Notification
 import useCurrentUser from "../../lib/hooks/useCurrentUser";
 import { ViewNFTList } from "./ViewNFTList";
 import { Container } from "react-bootstrap";
+import { Collectables } from "./Collectables";
 
 export const UploadFileToIPFS = ({
   provider,
@@ -84,7 +85,7 @@ export const UploadFileToIPFS = ({
       authentication: {
         metaDataHash: authenticateMetaData,
         signature: signer && (await signer.signMessage(authenticateMetaData)),
-        owner: signer && (await signer.getAddress()),
+        creator: signer && (await signer.getAddress()),
       },
     };
 
@@ -100,6 +101,7 @@ export const UploadFileToIPFS = ({
     try {
       createNFT_IPFS({
         ipfsHash: metaDataHash,
+        assetIndex:patentId,
         nftId: myData?.me?.nft?.id ?? null,
       });
     } catch (error) {
@@ -124,8 +126,15 @@ export const UploadFileToIPFS = ({
       <MetaDetailsContainer formFile={formFile} uploadToIPFS={uploadToIPFS} />
       <br />
       <br />
-      <Container>
+      <hr/>
+      <Container fluid>
         <ViewNFTList />
+      </Container>
+      <hr/>
+      <br/>
+      <br/>
+      <Container fluid>
+        <Collectables/>
       </Container>
     </>
   );

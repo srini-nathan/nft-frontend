@@ -18,7 +18,7 @@ export interface GetByIpfsHash_getByIpfsHash_authentication {
   __typename: "Authentication";
   metaDataHash: string | null;
   signature: string | null;
-  owner: string | null;
+  creator: string | null;
 }
 
 export interface GetByIpfsHash_getByIpfsHash {

@@ -7,6 +7,8 @@ import ErrorMessage from "../../common/ErrorMessage";
 import { useNotification } from "../../../lib/useNotification";
 import { ListOverMarketPlaceForm } from "./ListOverMarketPlaceForm";
 import { Contract, ethers } from "ethers";
+import { GetMyNFTAsset } from "../../../graphql/queries/__generated__/GetMyNFTAsset";
+import { ApolloQueryResult } from "@apollo/client";
 
 export type ListForSaleSubmitT = {
   listOverMarkerInput: { _tokenId: number; _price: number };
@@ -15,9 +17,11 @@ export type ListForSaleSubmitT = {
 export const ListOverMarketPlaceContainer = ({
   listOverMarkerInput,
   instance,
+  refetch,
 }: {
   listOverMarkerInput: { _tokenId: number; _price: number };
   instance: Contract | undefined;
+  refetch: () => Promise<ApolloQueryResult<GetMyNFTAsset>>;
 }) => {
   const [errors, setErrors] = useState<string[]>([]);
   const { success } = useNotification();
@@ -50,6 +54,7 @@ export const ListOverMarketPlaceContainer = ({
         (await instance?.provider.waitForTransaction(transactionObject.hash));
       if (TransactionReceipt) {
         success("Success", "Transaction executed successfully");
+        refetch();
       }
     } catch (error) {
       console.log(error);

@@ -22,7 +22,7 @@ export const defaultNFTAsset = {
 };
 
 export const useFetchNFTAsset = (assetIndex: string) => {
-  const { data, loading, error } = useQuery<
+  const { data, loading, refetch, error } = useQuery<
     GetMyNFTAsset,
     GetMyNFTAssetVariables
   >(GET_MY_NFT_ASSET, {
@@ -43,5 +43,5 @@ export const useFetchNFTAsset = (assetIndex: string) => {
     data && setMyNFTAsset(data.getMyNFTAsset ?? defaultNFTAsset);
   }, [data]);
 
-  return myNFTAsset ?? defaultNFTAsset;
+  return {myNFTAsset:myNFTAsset ?? defaultNFTAsset, refetch};
 };

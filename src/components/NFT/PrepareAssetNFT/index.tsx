@@ -5,6 +5,8 @@ import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import { getContractAddress } from "../../../services/contracts/contractConnector";
 import { useAssetNFTContract } from "../../../services/contracts/useContract";
+import { ApolloQueryResult } from "@apollo/client";
+import { GetMyNFTAsset } from "../../../graphql/queries/__generated__/GetMyNFTAsset";
 
 export interface createAssetNFTProps {
   _assetPrice: number;
@@ -13,8 +15,10 @@ export interface createAssetNFTProps {
 
 export const PrepareAssetNFT = ({
   metadataJson,
+  refetch
 }: {
   metadataJson: MetadataJson;
+  refetch:() => Promise<ApolloQueryResult<GetMyNFTAsset>>
 }) => {
   const { ipfsHash } = useParams<{ ipfsHash: string }>();
 
@@ -38,7 +42,7 @@ export const PrepareAssetNFT = ({
       instance={instance}
       createAssetNFT={createAssetNFT}
       assetIndex={assetIndex}
-      ipfsHash={ipfsHash}
+      refetch={refetch}
     />
   );
 };
